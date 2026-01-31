@@ -3,20 +3,22 @@ pipeline {
     stages {
         stage('Build & Test') {
             steps {
-                echo 'Building and testing on all branches...'
-                bat 'mvn clean test' // Uses the Maven you configured in Task 2
+                // Use 'bat' for Windows
+                bat 'mvn clean test'
             }
         }
         stage('Security Scan') {
-            when { branch 'release/*' } // Requirement: Only runs on release branches
+            // Requirement: Different strategy for Release branches
+            when { branch 'release/*' }
             steps {
-                echo 'Performing Security Scan for Release...'
+                echo 'Performing Security Scan on Release Branch...'
             }
         }
-        stage('Deployment') {
-            when { branch 'main' } // Requirement: Full CI/CD for main branch
+        stage('Deploy') {
+            // Requirement: Full CI/CD only for Main
+            when { branch 'main' }
             steps {
-                echo 'Deploying to Production environment...'
+                echo 'Deploying from Main branch...'
             }
         }
     }
